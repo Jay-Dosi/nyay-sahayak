@@ -1,7 +1,7 @@
 import spacy
 import re
 
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 def mine_arguments(text):
     doc = nlp(text)

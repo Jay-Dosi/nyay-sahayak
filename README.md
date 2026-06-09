@@ -20,7 +20,7 @@ Nyay-Sahayak is an end-to-end AI system for Indian legal document analysis, argu
 - **API Gateway:** FastAPI, orchestrates requests (`api-gateway/`)
 - **Scraper:** Scrapy-based, downloads Supreme Court judgments (`scraper/`)
 - **Ingestion Service:** FastAPI, NLP/argument mining, populates ChromaDB & Neo4j (`ingestion/`)
-- **RAG Service:** FastAPI, retrieval-augmented generation with Gemini API (`rag/`)
+- **RAG Service:** FastAPI, retrieval-augmented generation with Cohere API & LangChain (`rag/`)
 - **Fact Checker:** FastAPI, sentence-level semantic verification (`fact_checker/`)
 - **Databases:** ChromaDB (vector), Neo4j (graph)
 - **Orchestration:** Docker Compose
@@ -47,7 +47,7 @@ cd nyay-sahayak
 Create a `.env` file in the root directory:
 
 ```
-GEMINI_API_KEY=your_google_gemini_api_key
+COHERE_API_KEY=your_cohere_api_key
 ```
 
 ### 4. Build and Start All Services
@@ -85,6 +85,19 @@ shared_data/      # Shared files/data
 
 ---
 
+## Deployment Considerations
+
+> [!WARNING]
+> **Not suitable for Free Tiers.**
+> 
+> Due to the demanding nature of the local AI and database components, this project **cannot** be deployed on standard cloud "Free Tiers" (such as AWS t2.micro or Render free tier). 
+> 
+> The architecture runs memory-intensive local models (like `sentence-transformers` for embeddings and `spaCy` for argument mining) alongside enterprise databases (Neo4j, ChromaDB) and several distinct microservices. 
+> 
+> **To deploy successfully**, you will need a dedicated cloud server (like a VPS or EC2 instance) with at least **4GB to 8GB of RAM** and multiple CPU cores to ensure stable performance during document ingestion and knowledge graph traversal.
+
+---
+
 ## Contributing
 
 1. Fork the repo and create your branch (`git checkout -b feature/your-feature`)
@@ -103,8 +116,8 @@ MIT License. See [LICENSE](LICENSE) for details.
 ## Acknowledgements
 
 - Indian Supreme Court Open Data
-- Google Gemini API
-- ChromaDB, Neo4j, FastAPI, React, Tailwind CSS
+- Cohere API
+- LangChain, ChromaDB, Neo4j, FastAPI, React, Tailwind CSS
 
 ---
 

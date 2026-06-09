@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   api-gateway:
-    build: ./api-gateway
+    build:
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -18,14 +20,18 @@ services:
       - fact_checker
 
   scraper:
-    build: ./scraper
+    build:
+      context: .
+      dockerfile: ./scraper/Dockerfile
     environment:
       - SHARED_DATA_PATH=/shared_data
     volumes:
       - ./shared_data:/shared_data
 
   ingestion:
-    build: ./ingestion
+    build:
+      context: .
+      dockerfile: ./ingestion/Dockerfile
     environment:
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8004
@@ -40,16 +46,20 @@ services:
       - neo4j
 
   rag:
-    build: ./rag
+    build:
+      context: .
+      dockerfile: ./rag/Dockerfile
     environment:
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8004
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - COHERE_API_KEY=${COHERE_API_KEY}
     depends_on:
       - chromadb
 
   fact_checker:
-    build: ./fact_checker
+    build:
+      context: .
+      dockerfile: ./fact_checker/Dockerfile
     environment:
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8004

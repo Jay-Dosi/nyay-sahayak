@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from .chroma_utils import semantic_search
-from .gemini_client import call_gemini
+from .cohere_client import call_cohere
 from .prompt_engineering import build_prompt
 
 app = FastAPI(
@@ -24,7 +24,7 @@ def analyze(req: AnalyzeRequest):
     claims = context[:3]
     prompt = build_prompt(context, case_text, claims, req.user_query)
     try:
-        output = call_gemini(prompt)
+        output = call_cohere(prompt)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     return {"argument": output}
